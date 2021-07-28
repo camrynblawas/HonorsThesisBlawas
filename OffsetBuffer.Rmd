@@ -1,0 +1,28 @@
+---
+title: "Offset Buffer"
+author: "Camryn Blawas"
+date: "11/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+#Import
+d <- read.csv("~/HonorsThesisData/EV Sv Exports/SquirrelRock_SvCruisetrackOffset.csv")
+#Select variables of interest
+df <- select(d, Lat_M, Lon_M, Depth_mean)
+#Get rid of erroneous rows
+df <- df[df$Lat_M < 100,]
+#Calculate buffer
+df <- mutate(df, "Buffer" = Depth_mean*(tan(3.5*pi/180)))
+#Export
+write.csv(df, "BufferExports/SquirrelRock_SvCruisetrackOffsetwithBuffer.csv")
+```
